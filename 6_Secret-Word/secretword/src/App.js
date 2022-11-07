@@ -19,15 +19,65 @@ const stages = [
 
 function App() {
   const [gameStage, setGamestage] = useState(stages[0].name)
-  const[words] = useState(wordsList)
-  console.log(words)
+  const [words] = useState(wordsList)
+
+  const [pickedword, setPickedWord] = useState('')
+  const [pickedCategory, setPickedCategory] = useState('')
+  const [letters, serLetters] = useState([])
+
+  const pickWordAndPickCategory = () => {
+    //pick a random categorie (função para achar a categoria do jogo)
+    const categories = Object.keys(words)
+    const category =
+      categories[Math.floor(Math.random() * Object.keys(categories).length)]
+
+    console.log(category)
+
+    //pick a random word (função para mostrar a palavra aleatoria)
+    const word =
+      words[category][Math.floor(Math.random() * words[category].length)]
+    console.log(word)
+
+    return { word, category }
+  }
+
+  //start secret word game
+  const startGame = () => {
+    // pick word and pick category
+    const { word, category } = pickWordAndPickCategory()
+
+    // create en array of letter (criando as letras em arry)
+    let wordLetters = word.split('')
+
+    wordLetters = wordLetters.map((a) => a.toLowerCase())
+
+    console.log(word, category)
+    console.log(wordLetters)
+
+    //fill states
+    setPickedWord(word)
+    setPickedCategory(category)
+    serLetters(letters)
+
+    setGamestage(stages[1].name)
+  }
+
+  //process the letter input
+  const verifyLetter = () => {
+    setGamestage(stages[2].name)
+  }
+
+  //restarts the game
+  const retry = () => {
+    setGamestage(stages[0].name)
+  }
+
   return (
     <div className="App">
-      {gameStage === 'start' && <StartScrem />}
-      {gameStage === 'game' && <Game />}
-      {gameStage === 'end' && <GameOver />}
+      {gameStage === 'start' && <StartScrem startGame={startGame} />}
+      {gameStage === 'game' && <Game verifyLetter={verifyLetter} />}
+      {gameStage === 'end' && <GameOver retry={retry} />}
     </div>
   )
 }
-
 export default App
