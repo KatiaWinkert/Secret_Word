@@ -58,7 +58,7 @@ const Game = ({
           <button>Jogar!</button>
         </form>
       </div>
-      <div className="wronglettersContainer">
+      <div className="wrongLettersContainer">
         <p>Letras já jogadas: </p>
         {wrongletters.map((letter, i) => (
           <span key={i}>{letter}, </span>
